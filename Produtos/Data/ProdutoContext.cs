@@ -14,6 +14,6 @@ namespace ProdutosEFCore.Data
 
         }
 
-        public DbSet<ProdutosModel> TodoItems { get; set; }
+        public DbSet<ProdutosModel> Produtos { get; set; }
     }
 }

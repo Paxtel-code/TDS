@@ -3,8 +3,8 @@ using ProdutosEFCore.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 builder.Services.AddDbContext<ProdutosContext>(
-    // opt => opt.UseInMemoryDatabase("TodoList")
     opt => opt.UseSqlite(builder.Configuration.
     GetConnectionString("DefaultConnection"))
 );
@@ -12,6 +12,7 @@ builder.Services.AddDbContext<ProdutosContext>(
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+
 
 var app = builder.Build();
 

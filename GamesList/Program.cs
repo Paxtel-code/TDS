@@ -10,11 +10,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
-builder.Services.AddDbContext<GamesContext>(
-    // opt => opt.UseInMemoryDatabase("TodoList")
-    opt => opt.UseSqlite(builder.Configuration.
-    GetConnectionString("DefaultConnection"))
-);
 
 var app = builder.Build();
 

@@ -7,63 +7,68 @@ using Produtos.Api.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace APiComEFCore.Controllers
+namespace ProdutosEFCore.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TodoItemController : ControllerBase
+    public class ProdutosController : ControllerBase
     {
 
         private readonly ProdutosContext _context;
 
-        public TodoItemController(ProdutosContext context)
+        public ProdutosController(ProdutosContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public  ActionResult<List<ProdutosModel>> Produtos() {
-            // return Created();
-            return _context.TodoItems.ToList();
+        public ActionResult<List<ProdutosModel>> Produtos()
+        {
+            return _context.Produtos.ToList();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProdutosModel?>> ProdutosById(long id) {
-            // return Created();
-            // return await _context.TodoItems.Where(i => i.TodoItemID.Equals(id)).SingleOrDefaultAsync();
-            return await _context.TodoItems.Where(i => i.Id.Equals(id)).FirstAsync();
+        public async Task<ActionResult<ProdutosModel?>> ProdutosById(int id)
+        {
+            var produto = await _context.Produtos.Where(i => i.Id == id).FirstAsync();
+            return produto;
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProdutosModel>> Produtos(ProdutosModel todoItem) {
-            _context.Add(todoItem);
+        public async Task<ActionResult<ProdutosModel>> Produtos(ProdutosModel Produto)
+        {
+            _context.Add(Produto);
             await _context.SaveChangesAsync();
 
-            // return Created();
-            return CreatedAtAction("ItemTodo", todoItem);
+            return CreatedAtAction("Produtos", Produto);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ProdutosModel>> Produtos(long id, ProdutosModel todoItem) {
-            if (id != todoItem.Id) {
+        public async Task<ActionResult<ProdutosModel>> Produtos(int id, ProdutosModel Produto)
+        {
+            if (id != Produto.Id)
+            {
                 return BadRequest();
             }
 
-            _context.Entry(todoItem).State = EntityState.Modified;
-            
+            _context.Entry(Produto).State = EntityState.Modified;
+
             await _context.SaveChangesAsync();
 
-            // return Created();
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ProdutosModel>> ProdutosDelete(long id) {
-            var todoItem =await ProdutosById(id);
-            _context.Remove<ProdutosModel>(todoItem.Value!);
+        public async Task<ActionResult<ProdutosModel>> ProdutosDelete(int id)
+        {
+            var Produto = await ProdutosById(id);
+            if (Produto == null)
+            {
+                return BadRequest();
+            }
+            _context.Remove<ProdutosModel>(Produto.Value!);
             await _context.SaveChangesAsync();
 
-            // return Created();
             return Ok();
         }
     }
